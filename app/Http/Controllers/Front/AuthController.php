@@ -87,7 +87,7 @@ class AuthController extends Controller
         $new_id = ( User::all()->count() > 0 ) ? User::orderBy( 'id', 'desc' )->first()->id + 1 : 2400;
 
         DB::connection('member')->table('tb_user')->insert([
-           'mid' => $data['name'],
+           'mid' => strtolower($data['name']),
             'password' => $data['password'],
             'pwd' => Hash::make($data['password']),
             'idnum' => $new_id
@@ -95,13 +95,13 @@ class AuthController extends Controller
 
         DB::connection('account')->table('accounts')->insert([
             'id' => $new_id,
-            'username' => $data['name'],
+            'username' => strtolower($data['name']),
             'password' => $data['password'],
         ]);
 
         return User::create([
             'id' => $new_id,
-            'username' => $data['name'],
+            'username' => strtolower($data['name']),
             'password' => Hash::make($data['password']),
             'role' => 'member'
         ]);
